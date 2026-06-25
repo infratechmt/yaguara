@@ -420,8 +420,8 @@ button {
 }
 
 .hero-gaze {
-  z-index: -1;
-  opacity: 0.92;
+  z-index: 2;
+  opacity: 1;
   pointer-events: none;
   background: none;
   mix-blend-mode: normal;
@@ -436,20 +436,20 @@ button {
 }
 
 .hero-gaze::before {
-  right: 3.8vw;
-  top: 5.2rem;
-  width: min(44vw, 38rem);
+  right: 1.5vw;
+  top: 0.5rem;
+  width: min(56vw, 56rem);
   aspect-ratio: 1.26;
-  opacity: 0.94;
+  opacity: 0.82;
   background:
-    linear-gradient(90deg, rgba(3, 3, 2, 0), rgba(3, 3, 2, 0.38)),
+    linear-gradient(90deg, rgba(3, 3, 2, 0.5), transparent 36%, rgba(3, 3, 2, 0.08)),
     url("/yaguara/assets/jaguar-eye-hero.png");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
-  filter: saturate(1.06);
-  mask-image: radial-gradient(ellipse at 54% 50%, #000 0 47%, transparent 76%);
-  -webkit-mask-image: radial-gradient(ellipse at 54% 50%, #000 0 47%, transparent 76%);
+  filter: saturate(1.18) contrast(1.12) brightness(1.12) drop-shadow(0 0 2rem rgba(216, 155, 53, 0.2));
+  mask-image: radial-gradient(ellipse at 55% 48%, #000 0 52%, rgba(0, 0, 0, 0.86) 64%, transparent 84%);
+  -webkit-mask-image: radial-gradient(ellipse at 55% 48%, #000 0 52%, rgba(0, 0, 0, 0.86) 64%, transparent 84%);
 }
 
 .hero-gaze::after {
@@ -1677,7 +1677,11 @@ button {
   }
 
   .hero-gaze::before {
-    filter: none;
+    right: -18vw;
+    top: 4.5rem;
+    width: 92vw;
+    opacity: 0.68;
+    filter: saturate(1.08) contrast(1.08) brightness(1.08);
   }
 
   .album-image::after,
