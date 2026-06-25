@@ -444,7 +444,7 @@ button {
 }
 
 .hero-gaze {
-  z-index: 2;
+  z-index: 0;
   opacity: 1;
   pointer-events: none;
   background: none;
@@ -460,9 +460,9 @@ button {
 }
 
 .hero-gaze::before {
-  right: 1.5vw;
-  top: 0.5rem;
-  width: min(56vw, 56rem);
+  right: clamp(3rem, 8vw, 9rem);
+  top: 2rem;
+  width: min(31vw, 28rem);
   aspect-ratio: 1.26;
   opacity: 0.82;
   background:
@@ -624,14 +624,14 @@ button {
 .reel-panel {
   position: absolute;
   z-index: 1;
-  right: clamp(1.2rem, 7vw, 8rem);
-  bottom: 10vh;
-  width: min(44vw, 42rem);
+  right: clamp(1.2rem, 5vw, 6rem);
+  bottom: 4vh;
+  width: min(38vw, 36rem);
   aspect-ratio: 1.65;
   border: 1px solid rgba(216, 155, 53, 0.32);
   background: rgba(3, 3, 2, 0.18);
   box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.54);
-  transform: perspective(1000px) rotateY(-8deg) rotateX(3deg);
+  transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
   transform-origin: center;
 }
 
@@ -1678,8 +1678,8 @@ button {
     z-index: 1;
     right: auto;
     bottom: auto;
-    width: min(100%, 44rem);
-    margin-top: 3rem;
+    width: min(88%, 38rem);
+    margin-top: 4rem;
     justify-self: end;
   }
 
@@ -1702,9 +1702,9 @@ button {
   }
 
   .hero-gaze::before {
-    right: -18vw;
+    right: 1rem;
     top: 4.5rem;
-    width: 92vw;
+    width: min(52vw, 28rem);
     opacity: 0.68;
     filter: saturate(1.08) contrast(1.08) brightness(1.08);
   }
@@ -1751,9 +1751,9 @@ button {
   }
 
   .hero-gaze::before {
-    right: -7.5rem;
-    top: 5.7rem;
-    width: 26rem;
+    right: -1rem;
+    top: 5.2rem;
+    width: 17rem;
   }
 
   .hero h1 {
@@ -1776,7 +1776,9 @@ button {
   }
 
   .reel-panel {
-    aspect-ratio: 0.82;
+    width: 88%;
+    aspect-ratio: 1.25;
+    margin-top: 5rem;
     transform: none;
   }
 
