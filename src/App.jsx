@@ -547,6 +547,12 @@ function WhatWeDo({ labels }) {
             <p key={line}>{line}</p>
           ))}
         </div>
+        <img
+          className="about-jaguar"
+          src={publicAsset("assets/yaguara-jaguar-cutout.png")}
+          alt=""
+          aria-hidden="true"
+        />
       </div>
       <div className="service-strip">
         {labels.services.map((service) => (
