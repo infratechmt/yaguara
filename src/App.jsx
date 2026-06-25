@@ -478,33 +478,75 @@ function KineticStrip({ labels }) {
 
 function VisualAlbum({ labels, language }) {
   const album = [...projects, ...projects];
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  useEffect(() => {
+    if (!selectedProject) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setSelectedProject(null);
+    };
+
+    document.documentElement.classList.add("is-modal-open");
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.documentElement.classList.remove("is-modal-open");
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedProject]);
 
   return (
-    <section className="visual-album section-reveal" id="portfolio" aria-label={labels.album}>
-      <div className="album-head">
-        <span>{labels.album}</span>
-        <small>01 / 06</small>
-      </div>
-      <div className="album-window">
-        <div className="album-track">
-          {album.map((project, index) => (
-            <article
-              className={`album-card tone-${project.tone}`}
-              key={`${project.title.pt}-${index}`}
-              aria-label={project.title[language]}
-              style={{ "--work-image": `url(${project.image})` }}
-            >
-              <div className="album-image" />
-              <div className="album-caption">
-                <span>{String((index % projects.length) + 1).padStart(2, "0")}</span>
-                <h3>{project.title[language]}</h3>
-                <small>{project.type[language]}</small>
-              </div>
-            </article>
-          ))}
+    <>
+      <section className="visual-album section-reveal" id="portfolio" aria-label={labels.album}>
+        <div className="album-head">
+          <span>{labels.album}</span>
+          <small>01 / 08</small>
         </div>
-      </div>
-    </section>
+        <div className="album-window">
+          <div className="album-track">
+            {album.map((project, index) => (
+              <button
+                type="button"
+                className={`album-card tone-${project.tone}`}
+                key={`${project.title.pt}-${index}`}
+                aria-label={`${project.title[language]} — ampliar imagem`}
+                style={{ "--work-image": `url(${project.image})` }}
+                onClick={() => setSelectedProject(project)}
+              >
+                <span className="album-image" />
+                <div className="album-caption">
+                  <span>{String((index % projects.length) + 1).padStart(2, "0")}</span>
+                  <h3>{project.title[language]}</h3>
+                  <small>{project.type[language]}</small>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {selectedProject && (
+        <div className="album-lightbox" role="dialog" aria-modal="true" aria-label={selectedProject.title[language]}>
+          <button
+            type="button"
+            className="lightbox-backdrop"
+            aria-label="Fechar imagem"
+            onClick={() => setSelectedProject(null)}
+          />
+          <div className="lightbox-content">
+            <img src={selectedProject.image} alt={selectedProject.title[language]} />
+            <div className="lightbox-caption">
+              <span>{selectedProject.type[language]}</span>
+              <h3>{selectedProject.title[language]}</h3>
+            </div>
+            <button type="button" className="lightbox-close" aria-label="Fechar imagem" onClick={() => setSelectedProject(null)}>
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
