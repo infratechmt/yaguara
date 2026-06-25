@@ -645,39 +645,46 @@ export default function App() {
   const labels = copy[language];
 
   useEffect(() => {
-    const controller = new AbortController();
     let active = true;
+    let finished = false;
+    const preloader = document.createElement("video");
 
-    const preloadReel = async () => {
-      try {
-        const response = await fetch(reelVideos[0].src, { signal: controller.signal });
-        if (!response.ok || !response.body) throw new Error("Media preload failed");
-
-        const total = Number(response.headers.get("content-length")) || 0;
-        const reader = response.body.getReader();
-        let loaded = 0;
-
-        while (active) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          loaded += value.byteLength;
-          if (total) setLoadingProgress(Math.min(96, (loaded / total) * 96));
-        }
-      } catch (error) {
-        if (error.name === "AbortError") return;
-      }
-
+    const finishLoading = () => {
+      if (!active || finished) return;
+      finished = true;
       if (!active) return;
       setLoadingProgress(100);
       window.setTimeout(() => setLoaderLeaving(true), 180);
       window.setTimeout(() => setLoading(false), 850);
     };
 
-    preloadReel();
+    const updateBufferedProgress = () => {
+      if (!active || !preloader.duration || !preloader.buffered.length) return;
+      const buffered = preloader.buffered.end(preloader.buffered.length - 1);
+      setLoadingProgress(Math.min(92, Math.max(18, (buffered / preloader.duration) * 92)));
+    };
+
+    preloader.muted = true;
+    preloader.preload = "auto";
+    preloader.playsInline = true;
+    preloader.src = reelVideos[0].src;
+    preloader.addEventListener("loadedmetadata", () => setLoadingProgress((value) => Math.max(value, 28)));
+    preloader.addEventListener("progress", updateBufferedProgress);
+    preloader.addEventListener("canplay", finishLoading, { once: true });
+    preloader.addEventListener("error", finishLoading, { once: true });
+    preloader.load();
+
+    const progressTimer = window.setInterval(() => {
+      setLoadingProgress((value) => Math.min(90, value + (90 - value) * 0.08 + 0.4));
+    }, 180);
+    const safetyTimer = window.setTimeout(finishLoading, 6500);
 
     return () => {
       active = false;
-      controller.abort();
+      window.clearInterval(progressTimer);
+      window.clearTimeout(safetyTimer);
+      preloader.removeAttribute("src");
+      preloader.load();
     };
   }, []);
 
