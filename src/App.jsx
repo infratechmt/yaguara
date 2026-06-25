@@ -251,10 +251,6 @@ function Header({ language, setLanguage, labels, onNavigate }) {
           EN
         </button>
       </div>
-      <button className="menu-button" aria-label="Abrir menu">
-        <span />
-        <span />
-      </button>
     </header>
   );
 }
