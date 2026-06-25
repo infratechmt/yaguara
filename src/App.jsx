@@ -1,11 +1,4 @@
-import { Canvas, useFrame } from "@react-three/fiber";
-import gsap from "gsap";
-import Lenis from "lenis";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useMemo, useRef, useState } from "react";
-import * as THREE from "three";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useEffect, useRef, useState } from "react";
 
 const localAssets = import.meta.glob("./IMAGENS/**/*", {
   eager: true,
@@ -163,84 +156,9 @@ function useReducedMotion() {
   return reduced;
 }
 
-function ParticleEye({ reducedMotion }) {
-  const group = useRef(null);
-  const points = useRef(null);
-
-  const { positions, colors } = useMemo(() => {
-    const count = 2600;
-    const positionArray = new Float32Array(count * 3);
-    const colorArray = new Float32Array(count * 3);
-    const amber = new THREE.Color("#d89b35");
-    const bone = new THREE.Color("#efe8dc");
-    const green = new THREE.Color("#244237");
-
-    for (let i = 0; i < count; i += 1) {
-      const t = Math.random() * Math.PI * 2;
-      const ring = Math.random();
-      const side = Math.random() > 0.5 ? 1 : -1;
-      const eye = Math.pow(Math.sin(t), 2) * 0.34 + 0.1;
-      const radiusX = 1.75 + ring * 2.15;
-      const radiusY = eye + ring * 0.42;
-      const jitter = (Math.random() - 0.5) * 0.26;
-
-      positionArray[i * 3] = side * 1.55 + Math.cos(t) * radiusX + jitter;
-      positionArray[i * 3 + 1] = Math.sin(t) * radiusY + (Math.random() - 0.5) * 0.25;
-      positionArray[i * 3 + 2] = (Math.random() - 0.5) * 2.8;
-
-      const color = ring > 0.62 ? amber : Math.random() > 0.78 ? bone : green;
-      colorArray[i * 3] = color.r;
-      colorArray[i * 3 + 1] = color.g;
-      colorArray[i * 3 + 2] = color.b;
-    }
-
-    return { positions: positionArray, colors: colorArray };
-  }, []);
-
-  useFrame(({ clock, pointer }) => {
-    if (!group.current || reducedMotion) return;
-    const elapsed = clock.getElapsedTime();
-    group.current.rotation.z = Math.sin(elapsed * 0.16) * 0.04;
-    group.current.rotation.y = pointer.x * 0.16;
-    group.current.rotation.x = -pointer.y * 0.08;
-    points.current.material.opacity = 0.76 + Math.sin(elapsed * 0.8) * 0.1;
-  });
-
-  return (
-    <group ref={group} position={[2.15, 0.65, -1]} rotation={[0.02, -0.2, -0.02]}>
-      <points ref={points}>
-        <bufferGeometry>
-          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-          <bufferAttribute attach="attributes-color" args={[colors, 3]} />
-        </bufferGeometry>
-        <pointsMaterial
-          vertexColors
-          size={0.04}
-          sizeAttenuation
-          transparent
-          opacity={0.82}
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        />
-      </points>
-    </group>
-  );
-}
-
-function HeroScene({ reducedMotion }) {
-  return (
-    <Canvas camera={{ position: [0, 0, 8], fov: 44 }} dpr={[1, 1.8]}>
-      <color attach="background" args={["#030302"]} />
-      <fog attach="fog" args={["#030302", 6, 14]} />
-      <ParticleEye reducedMotion={reducedMotion} />
-      <ambientLight intensity={0.2} />
-    </Canvas>
-  );
-}
-
 function ScrollProgress({ labels }) {
-  const [progress, setProgress] = useState(0);
-  const [section, setSection] = useState("01");
+  const progressRef = useRef(null);
+  const sectionRef = useRef(null);
 
   useEffect(() => {
     const sections = [
@@ -251,9 +169,11 @@ function ScrollProgress({ labels }) {
       { id: "contact", value: "05" },
     ];
 
+    let frame = 0;
     const update = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(max > 0 ? window.scrollY / max : 0);
+      const progress = max > 0 ? window.scrollY / max : 0;
+      if (progressRef.current) progressRef.current.style.transform = `scaleY(${progress})`;
 
       const active = sections
         .map((item) => {
@@ -263,24 +183,30 @@ function ScrollProgress({ labels }) {
         })
         .sort((a, b) => a.distance - b.distance)[0];
 
-      if (active) setSection(active.value);
+      if (active && sectionRef.current) sectionRef.current.textContent = active.value;
+      frame = 0;
     };
 
-    update();
-    window.addEventListener("scroll", update, { passive: true });
+    const requestUpdate = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+
+    requestUpdate();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", update);
 
     return () => {
-      window.removeEventListener("scroll", update);
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", update);
     };
   }, []);
 
   return (
-    <aside className="scroll-progress" aria-label={`${labels.chapterPrefix} ${section}`}>
-      <span>{section}</span>
+    <aside className="scroll-progress" aria-label={labels.chapterPrefix}>
+      <span ref={sectionRef}>01</span>
       <div>
-        <i style={{ transform: `scaleY(${progress})` }} />
+        <i ref={progressRef} />
       </div>
       <small>{labels.chapterPrefix}</small>
     </aside>
@@ -335,9 +261,36 @@ function Header({ language, setLanguage, labels, onNavigate }) {
 
 function JaguarVideoStack({ activeVideo, language, reducedMotion, videos = jaguarVideos, className = "" }) {
   const active = videos[activeVideo];
+  const stackRef = useRef(null);
+
+  useEffect(() => {
+    const stack = stackRef.current;
+    if (!stack) return undefined;
+
+    const syncPlayback = (visible) => {
+      stack.querySelectorAll("video").forEach((video, index) => {
+        if (visible && index === activeVideo && !reducedMotion) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => syncPlayback(entry.isIntersecting),
+      { rootMargin: "120px 0px", threshold: 0.05 },
+    );
+
+    observer.observe(stack);
+    return () => {
+      observer.disconnect();
+      syncPlayback(false);
+    };
+  }, [activeVideo, reducedMotion]);
 
   return (
-    <div className={`jaguar-video-stack ${className}`} aria-label={active.title[language]}>
+    <div ref={stackRef} className={`jaguar-video-stack ${className}`} aria-label={active.title[language]}>
       {videos.map((video, index) => (
         <video
           key={video.src}
@@ -345,9 +298,8 @@ function JaguarVideoStack({ activeVideo, language, reducedMotion, videos = jagua
           src={video.src}
           muted
           loop
-          autoPlay={!reducedMotion}
           playsInline
-          preload="metadata"
+          preload={index === activeVideo ? "metadata" : "none"}
         />
       ))}
       <div className="video-grade" aria-hidden="true" />
@@ -390,12 +342,12 @@ function MagneticButton({ children, href = "#portfolio", variant = "primary", on
     const rect = ref.current.getBoundingClientRect();
     const x = event.clientX - rect.left - rect.width / 2;
     const y = event.clientY - rect.top - rect.height / 2;
-    gsap.to(ref.current, { x: x * 0.18, y: y * 0.18, duration: 0.28, ease: "power2.out" });
+    ref.current.style.transform = `translate3d(${x * 0.12}px, ${y * 0.12}px, 0)`;
   };
 
   const reset = () => {
     if (reducedMotion || !ref.current) return;
-    gsap.to(ref.current, { x: 0, y: 0, duration: 0.45, ease: "elastic.out(1, 0.45)" });
+    ref.current.style.transform = "translate3d(0, 0, 0)";
   };
 
   return (
@@ -416,7 +368,6 @@ function Hero({ reducedMotion, labels, language, onNavigate }) {
   return (
     <section className="hero section-reveal" id="home">
       <div className="hero-canvas" aria-hidden="true">
-        <HeroScene reducedMotion={reducedMotion} />
       </div>
       <div className="hero-noise" aria-hidden="true" />
       <div className="hero-gaze" aria-hidden="true" />
@@ -633,22 +584,47 @@ function CursorLight() {
 
   useEffect(() => {
     if (reducedMotion) return undefined;
+    let frame = 0;
+    let x = 0;
+    let y = 0;
+
     const move = (event) => {
-      if (!ref.current) return;
-      ref.current.style.setProperty("--x", `${event.clientX}px`);
-      ref.current.style.setProperty("--y", `${event.clientY}px`);
+      x = event.clientX;
+      y = event.clientY;
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        if (ref.current) {
+          ref.current.style.setProperty("--x", `${x}px`);
+          ref.current.style.setProperty("--y", `${y}px`);
+        }
+        frame = 0;
+      });
     };
+
     window.addEventListener("pointermove", move);
-    return () => window.removeEventListener("pointermove", move);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("pointermove", move);
+    };
   }, [reducedMotion]);
 
   return <div className="cursor-light" ref={ref} aria-hidden="true" />;
 }
 
 function LoadingScreen({ progress, leaving }) {
+  const animatedWord = (word) =>
+    [...word].map((letter, index) => (
+      <span key={`${word}-${index}`} style={{ "--letter-index": index }} aria-hidden="true">
+        {letter}
+      </span>
+    ));
+
   return (
     <div className={`loading-screen${leaving ? " is-leaving" : ""}`} role="status" aria-live="polite">
-      <div className="loading-brand">YAGUARA</div>
+      <div className="loading-brand" aria-label="Yaguara Films">
+        <div className="loading-yaguara">{animatedWord("YAGUARA")}</div>
+        <div className="loading-films">{animatedWord("FILMS")}</div>
+      </div>
       <div className="loading-copy">
         <span>CARREGANDO EXPERIÊNCIA</span>
         <strong>{String(Math.round(progress)).padStart(2, "0")}%</strong>
@@ -666,7 +642,6 @@ export default function App() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loaderLeaving, setLoaderLeaving] = useState(false);
-  const lenisRef = useRef(null);
   const labels = copy[language];
 
   useEffect(() => {
@@ -711,35 +686,6 @@ export default function App() {
     return () => document.documentElement.classList.remove("is-loading");
   }, [loading]);
 
-  useEffect(() => {
-    if (reducedMotion) return undefined;
-
-    const lenis = new Lenis({
-      duration: 1.45,
-      easing: (t) => Math.min(1, 1.001 - 2 ** (-10 * t)),
-      smoothWheel: true,
-      wheelMultiplier: 0.85,
-      touchMultiplier: 1.4,
-      infinite: false,
-    });
-
-    lenisRef.current = lenis;
-
-    const update = (time) => {
-      lenis.raf(time * 1000);
-    };
-
-    lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add(update);
-    gsap.ticker.lagSmoothing(0);
-
-    return () => {
-      gsap.ticker.remove(update);
-      lenis.destroy();
-      lenisRef.current = null;
-    };
-  }, [reducedMotion]);
-
   const handleNavigate = (event) => {
     const href = event.currentTarget.getAttribute("href");
     if (!href?.startsWith("#")) return;
@@ -748,126 +694,11 @@ export default function App() {
     const target = document.querySelector(href);
     if (!target) return;
 
-    if (reducedMotion || !lenisRef.current) {
-      target.scrollIntoView({ block: "start" });
-      return;
-    }
-
-    lenisRef.current.scrollTo(target, {
-      offset: 0,
-      duration: 1.45,
-      easing: (t) => Math.min(1, 1.001 - 2 ** (-10 * t)),
+    target.scrollIntoView({
+      block: "start",
+      behavior: reducedMotion ? "auto" : "smooth",
     });
   };
-
-  useEffect(() => {
-    if (reducedMotion) return undefined;
-
-    const ctx = gsap.context(() => {
-      gsap.utils.toArray(".section-reveal").forEach((element) => {
-        gsap.fromTo(
-          element,
-          { opacity: 0, y: 70 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: element,
-              start: "top 82%",
-            },
-          },
-        );
-      });
-
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: ".hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: 1.1,
-          },
-        })
-        .to(".hero-canvas", { scale: 1.18, yPercent: 12, ease: "none" }, 0)
-        .to(".hero-gaze", { yPercent: -18, scale: 1.12, opacity: 0.92, ease: "none" }, 0)
-        .to(".hero-copy", { yPercent: -22, opacity: 0.58, ease: "none" }, 0)
-        .to(".reel-panel", { yPercent: -34, rotateY: 5, rotateX: -2, ease: "none" }, 0);
-
-      gsap.utils.toArray(".project-tile").forEach((tile, index) => {
-        gsap.fromTo(
-          tile,
-          {
-            clipPath: "inset(18% 0 18% 0)",
-            rotateX: index % 2 === 0 ? -10 : 10,
-            y: 120,
-          },
-          {
-            clipPath: "inset(0% 0 0% 0)",
-            rotateX: 0,
-            y: 0,
-            duration: 1.15,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: tile,
-              start: "top 88%",
-              end: "top 42%",
-              scrub: 0.8,
-            },
-          },
-        );
-      });
-
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: ".featured-frame",
-            start: "top 86%",
-            end: "bottom 38%",
-            scrub: 0.9,
-          },
-        })
-        .fromTo(".featured-media", { scale: 1.12, rotateZ: -1.8 }, { scale: 1, rotateZ: 0, ease: "none" })
-        .fromTo(".featured-meta", { xPercent: -12 }, { xPercent: 4, ease: "none" }, 0);
-
-      gsap.fromTo(
-        ".service-strip span",
-        { yPercent: 80, opacity: 0.08 },
-        {
-          yPercent: 0,
-          opacity: 1,
-          stagger: 0.12,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".what",
-            start: "top 75%",
-            end: "center 44%",
-            scrub: 0.7,
-          },
-        },
-      );
-
-      gsap.fromTo(
-        ".footer-eye",
-        { scale: 0.75, rotate: -10, opacity: 0.22 },
-        {
-          scale: 1.25,
-          rotate: 5,
-          opacity: 0.7,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ".footer-cta",
-            start: "top 85%",
-            end: "bottom bottom",
-            scrub: 1,
-          },
-        },
-      );
-    });
-
-    return () => ctx.revert();
-  }, [reducedMotion]);
 
   return (
     <>
