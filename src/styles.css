@@ -94,8 +94,33 @@ body::before {
   visibility: hidden;
 }
 
+.loading-eye {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  z-index: 0;
+  width: min(74vw, 58rem);
+  aspect-ratio: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--black), transparent 28% 72%, var(--black)),
+    linear-gradient(0deg, var(--black), transparent 32% 68%, var(--black)),
+    url("/yaguara/assets/jaguar-eye-hero.png") center / cover no-repeat;
+  filter: saturate(1.18) contrast(1.18) brightness(1.08);
+  transform: translate(-50%, -50%) scale(1.5);
+  mask-image: radial-gradient(ellipse at center, #000 0 48%, rgba(0, 0, 0, 0.72) 62%, transparent 82%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 0 48%, rgba(0, 0, 0, 0.72) 62%, transparent 82%);
+  animation: loaderEyeZoom 1.55s cubic-bezier(0.22, 1, 0.36, 1) 780ms both;
+}
+
+.loading-screen.is-leaving .loading-eye {
+  opacity: 0;
+}
+
 .loading-brand {
   position: relative;
+  z-index: 2;
   display: grid;
   width: min-content;
   margin-bottom: auto;
@@ -168,6 +193,7 @@ body::before {
 
 .loading-copy {
   position: relative;
+  z-index: 2;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -186,6 +212,7 @@ body::before {
 
 .loading-track {
   position: relative;
+  z-index: 2;
   height: 2px;
   overflow: hidden;
   background: rgba(238, 231, 220, 0.14);
@@ -197,6 +224,27 @@ body::before {
   background: linear-gradient(90deg, #8f5d1c, var(--amber), var(--bone));
   transform-origin: left;
   transition: transform 180ms ease-out;
+}
+
+@keyframes loaderEyeZoom {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+
+  24% {
+    opacity: 0.72;
+  }
+
+  72% {
+    opacity: 0.82;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 a {

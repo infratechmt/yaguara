@@ -623,6 +623,7 @@ function LoadingScreen({ progress, leaving }) {
 
   return (
     <div className={`loading-screen${leaving ? " is-leaving" : ""}`} role="status" aria-live="polite">
+      <div className="loading-eye" aria-hidden="true" />
       <div className="loading-brand" aria-label="Yaguara Films">
         <div className="loading-yaguara">{animatedWord("YAGUARA")}</div>
         <div className="loading-films">{animatedWord("FILMS")}</div>
@@ -649,15 +650,22 @@ export default function App() {
   useEffect(() => {
     let active = true;
     let finished = false;
+    let finishTimer = 0;
+    const startedAt = performance.now();
+    const minimumVisibleTime = 2400;
     const preloader = document.createElement("video");
 
     const finishLoading = () => {
       if (!active || finished) return;
       finished = true;
-      if (!active) return;
-      setLoadingProgress(100);
-      window.setTimeout(() => setLoaderLeaving(true), 180);
-      window.setTimeout(() => setLoading(false), 850);
+      const remainingTime = Math.max(0, minimumVisibleTime - (performance.now() - startedAt));
+
+      finishTimer = window.setTimeout(() => {
+        if (!active) return;
+        setLoadingProgress(100);
+        window.setTimeout(() => setLoaderLeaving(true), 180);
+        window.setTimeout(() => setLoading(false), 850);
+      }, remainingTime);
     };
 
     const updateBufferedProgress = () => {
@@ -683,6 +691,7 @@ export default function App() {
 
     return () => {
       active = false;
+      window.clearTimeout(finishTimer);
       window.clearInterval(progressTimer);
       window.clearTimeout(safetyTimer);
       preloader.removeAttribute("src");
