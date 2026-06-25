@@ -870,16 +870,14 @@ button {
 }
 
 .album-track {
+  --album-gap: clamp(1rem, 2vw, 2rem);
+  --album-padding: clamp(1.2rem, 8vw, 8rem);
   display: flex;
   width: max-content;
-  gap: clamp(1rem, 2vw, 2rem);
-  padding-left: clamp(1.2rem, 8vw, 8rem);
+  gap: var(--album-gap);
+  padding-left: var(--album-padding);
   animation: albumDrift 38s linear infinite;
   will-change: transform;
-}
-
-.album-track:hover {
-  animation-play-state: paused;
 }
 
 .album-card {
@@ -1085,7 +1083,7 @@ button {
   }
 
   to {
-    transform: translateX(-50%);
+    transform: translateX(calc(-50% - var(--album-gap) / 2 + var(--album-padding) / 2));
   }
 }
 
@@ -1794,7 +1792,7 @@ button {
   }
 
   .album-track {
-    padding-left: 1rem;
+    --album-padding: 1rem;
     animation-duration: 30s;
   }
 
