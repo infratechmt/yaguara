@@ -603,11 +603,71 @@ function CursorLight() {
   return <div className="cursor-light" ref={ref} aria-hidden="true" />;
 }
 
+function LoadingScreen({ progress, leaving }) {
+  return (
+    <div className={`loading-screen${leaving ? " is-leaving" : ""}`} role="status" aria-live="polite">
+      <div className="loading-brand">YAGUARA</div>
+      <div className="loading-copy">
+        <span>CARREGANDO EXPERIÊNCIA</span>
+        <strong>{String(Math.round(progress)).padStart(2, "0")}%</strong>
+      </div>
+      <div className="loading-track" aria-hidden="true">
+        <span style={{ transform: `scaleX(${progress / 100})` }} />
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const reducedMotion = useReducedMotion();
   const [language, setLanguage] = useState("pt");
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [loaderLeaving, setLoaderLeaving] = useState(false);
   const lenisRef = useRef(null);
   const labels = copy[language];
+
+  useEffect(() => {
+    const controller = new AbortController();
+    let active = true;
+
+    const preloadReel = async () => {
+      try {
+        const response = await fetch(reelVideos[0].src, { signal: controller.signal });
+        if (!response.ok || !response.body) throw new Error("Media preload failed");
+
+        const total = Number(response.headers.get("content-length")) || 0;
+        const reader = response.body.getReader();
+        let loaded = 0;
+
+        while (active) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          loaded += value.byteLength;
+          if (total) setLoadingProgress(Math.min(96, (loaded / total) * 96));
+        }
+      } catch (error) {
+        if (error.name === "AbortError") return;
+      }
+
+      if (!active) return;
+      setLoadingProgress(100);
+      window.setTimeout(() => setLoaderLeaving(true), 180);
+      window.setTimeout(() => setLoading(false), 850);
+    };
+
+    preloadReel();
+
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("is-loading", loading);
+    return () => document.documentElement.classList.remove("is-loading");
+  }, [loading]);
 
   useEffect(() => {
     if (reducedMotion) return undefined;
@@ -769,6 +829,7 @@ export default function App() {
 
   return (
     <>
+      {loading && <LoadingScreen progress={loadingProgress} leaving={loaderLeaving} />}
       <CursorLight />
       <ScrollProgress labels={labels} />
       <Header language={language} setLanguage={setLanguage} labels={labels} onNavigate={handleNavigate} />
