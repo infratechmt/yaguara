@@ -7,7 +7,14 @@ import * as THREE from "three";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const asset = (path) => new URL(path, import.meta.url).href;
+const localAssets = import.meta.glob("./IMAGENS/**/*", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+
+const asset = (path) => localAssets[path];
+const publicAsset = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
 
 const projects = [
   {
@@ -71,15 +78,15 @@ const aboutJaguar = asset("./IMAGENS/yaguara-jaguar-cutout.png");
 
 const jaguarVideos = [
   {
-    src: "/assets/jaguar-videos/pantanal-jaguar.webm",
+    src: publicAsset("assets/jaguar-videos/pantanal-jaguar.webm"),
     title: { pt: "PANTANAL", en: "PANTANAL" },
   },
   {
-    src: "/assets/jaguar-videos/jaguars-couple.webm",
+    src: publicAsset("assets/jaguar-videos/jaguars-couple.webm"),
     title: { pt: "OLHAR DUPLO", en: "DOUBLE GAZE" },
   },
   {
-    src: "/assets/jaguar-videos/jaguars-playing.webm",
+    src: publicAsset("assets/jaguar-videos/jaguars-playing.webm"),
     title: { pt: "INSTINTO EM MOVIMENTO", en: "INSTINCT IN MOTION" },
   },
 ];
