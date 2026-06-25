@@ -460,9 +460,9 @@ button {
 }
 
 .hero-gaze::before {
-  right: clamp(3rem, 8vw, 9rem);
-  top: 2rem;
-  width: min(31vw, 28rem);
+  right: clamp(-2rem, 2vw, 2rem);
+  top: clamp(3rem, 8vh, 6rem);
+  width: min(58vw, 58rem);
   aspect-ratio: 1.26;
   opacity: 0.82;
   background:
@@ -621,59 +621,6 @@ button {
   white-space: nowrap;
 }
 
-.reel-panel {
-  position: absolute;
-  z-index: 1;
-  right: clamp(1.2rem, 5vw, 6rem);
-  bottom: 4vh;
-  width: min(38vw, 36rem);
-  aspect-ratio: 1.65;
-  border: 1px solid rgba(216, 155, 53, 0.32);
-  background: rgba(3, 3, 2, 0.18);
-  box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.54);
-  transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
-  transform-origin: center;
-}
-
-.reel-panel::before,
-.reel-panel::after {
-  position: absolute;
-  inset: 1.2rem;
-  z-index: -1;
-  content: "";
-  border: 1px solid rgba(216, 155, 53, 0.1);
-  transform: translate(-1.7rem, 1.5rem);
-}
-
-.reel-panel::after {
-  transform: translate(-3.2rem, 3rem);
-  opacity: 0.5;
-}
-
-.reel-visual {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 74% 42%, rgba(216, 155, 53, 0.44), transparent 14rem),
-    linear-gradient(130deg, rgba(10, 13, 11, 0.2), rgba(216, 155, 53, 0.14)),
-    linear-gradient(180deg, rgba(238, 231, 220, 0.06), rgba(3, 3, 2, 0.78)),
-    var(--green);
-}
-
-.reel-visual::before {
-  position: absolute;
-  inset: -14%;
-  z-index: 2;
-  content: "";
-  opacity: 0.42;
-  background:
-    repeating-linear-gradient(105deg, transparent 0 1.1rem, rgba(216, 155, 53, 0.14) 1.15rem 1.22rem),
-    radial-gradient(circle at 30% 70%, rgba(238, 231, 220, 0.18), transparent 13rem);
-  filter: blur(0.2px);
-  transform: rotate(-4deg);
-}
-
 .jaguar-video-stack {
   position: absolute;
   inset: 0;
@@ -709,88 +656,10 @@ button {
     radial-gradient(circle at 74% 42%, rgba(216, 155, 53, 0.26), transparent 15rem);
 }
 
-.reel-scene {
-  position: absolute;
-  left: 2rem;
-  top: 1.5rem;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  color: rgba(238, 231, 220, 0.88);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-}
-
-.reel-scene span {
-  color: var(--amber);
-}
-
-.reel-scene strong {
-  font-weight: 700;
-}
-
-.rain-lines {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  opacity: 0.48;
-  background: repeating-linear-gradient(90deg, transparent 0 1.4rem, rgba(238, 231, 220, 0.09) 1.45rem 1.5rem);
-  mix-blend-mode: screen;
-}
-
-.reel-controls {
-  position: absolute;
-  left: 2rem;
-  right: 2rem;
-  bottom: 1.5rem;
-  display: grid;
-  grid-template-columns: 2.2rem auto 1fr auto;
-  align-items: center;
-  gap: 1rem;
-  color: rgba(238, 231, 220, 0.82);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-}
-
-.play-button,
 .tile-play {
   border: 0;
   background: transparent;
   cursor: pointer;
-}
-
-.play-button {
-  width: 0;
-  height: 0;
-  border-top: 0.55rem solid transparent;
-  border-bottom: 0.55rem solid transparent;
-  border-left: 0.82rem solid var(--bone);
-}
-
-.progress-track {
-  height: 1px;
-  background: rgba(238, 231, 220, 0.36);
-}
-
-.progress-track span {
-  display: block;
-  width: 0;
-  height: 100%;
-  background: var(--amber);
-  box-shadow: 0 0 1rem rgba(216, 155, 53, 0.8);
-  animation: reelProgress 5.6s linear forwards;
-}
-
-@keyframes reelProgress {
-  from {
-    width: 0;
-  }
-
-  to {
-    width: 100%;
-  }
 }
 
 .featured,
@@ -1673,16 +1542,6 @@ button {
     gap: 1.5rem;
   }
 
-  .reel-panel {
-    position: relative;
-    z-index: 1;
-    right: auto;
-    bottom: auto;
-    width: min(88%, 38rem);
-    margin-top: 4rem;
-    justify-self: end;
-  }
-
   .project-tile {
     grid-column: span 6;
   }
@@ -1702,15 +1561,14 @@ button {
   }
 
   .hero-gaze::before {
-    right: 1rem;
-    top: 4.5rem;
-    width: min(52vw, 28rem);
+    right: -3rem;
+    top: 4rem;
+    width: min(68vw, 38rem);
     opacity: 0.68;
     filter: saturate(1.08) contrast(1.08) brightness(1.08);
   }
 
   .album-image::after,
-  .rain-lines,
   .project-image::after {
     display: none;
   }
@@ -1751,9 +1609,9 @@ button {
   }
 
   .hero-gaze::before {
-    right: -1rem;
+    right: -7rem;
     top: 5.2rem;
-    width: 17rem;
+    width: 27rem;
   }
 
   .hero h1 {
@@ -1773,21 +1631,6 @@ button {
 
   .magnetic-button {
     width: 100%;
-  }
-
-  .reel-panel {
-    width: 88%;
-    aspect-ratio: 1.25;
-    margin-top: 5rem;
-    transform: none;
-  }
-
-  .reel-scene {
-    left: 1rem;
-    right: 1rem;
-    top: 1rem;
-    justify-content: space-between;
-    font-size: 0.62rem;
   }
 
   .portfolio-head {

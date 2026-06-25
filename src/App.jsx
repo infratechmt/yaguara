@@ -303,32 +303,6 @@ function JaguarVideoStack({ activeVideo, language, reducedMotion, videos = jagua
   );
 }
 
-function ReelPanel({ reducedMotion, language }) {
-  const activeVideo = useRotatingVideo(reducedMotion, 5600, reelVideos);
-  const active = reelVideos[activeVideo];
-
-  return (
-    <div className="reel-panel" aria-label="Featured reel">
-      <div className="reel-visual">
-        <JaguarVideoStack activeVideo={activeVideo} language={language} reducedMotion={reducedMotion} videos={reelVideos} />
-        <div className="rain-lines" />
-      </div>
-      <div className="reel-scene">
-        <span>{String(activeVideo + 1).padStart(2, "0")}</span>
-        <strong>{active.title[language]}</strong>
-      </div>
-      <div className="reel-controls">
-        <button className="play-button" aria-label="Assistir reel" />
-        <span>00:24</span>
-        <div className="progress-track">
-          <span key={activeVideo} />
-        </div>
-        <span>01:30</span>
-      </div>
-    </div>
-  );
-}
-
 function MagneticButton({ children, href = "#portfolio", variant = "primary", onNavigate }) {
   const ref = useRef(null);
   const reducedMotion = useReducedMotion();
@@ -360,7 +334,7 @@ function MagneticButton({ children, href = "#portfolio", variant = "primary", on
   );
 }
 
-function Hero({ reducedMotion, labels, language, onNavigate }) {
+function Hero({ labels, onNavigate }) {
   return (
     <section className="hero section-reveal" id="home">
       <div className="hero-canvas" aria-hidden="true">
@@ -383,7 +357,6 @@ function Hero({ reducedMotion, labels, language, onNavigate }) {
           </MagneticButton>
         </div>
       </div>
-      <ReelPanel reducedMotion={reducedMotion} language={language} />
     </section>
   );
 }
@@ -725,7 +698,7 @@ export default function App() {
       <ScrollProgress labels={labels} />
       <Header language={language} setLanguage={setLanguage} labels={labels} onNavigate={handleNavigate} />
       <main>
-        <Hero reducedMotion={reducedMotion} labels={labels} language={language} onNavigate={handleNavigate} />
+        <Hero labels={labels} onNavigate={handleNavigate} />
         <FeaturedWork labels={labels} language={language} reducedMotion={reducedMotion} />
         <KineticStrip labels={labels} />
         <VisualAlbum labels={labels} language={language} />
