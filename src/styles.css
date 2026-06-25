@@ -153,8 +153,7 @@ button {
 
 .brand {
   display: inline-grid;
-  width: clamp(4.8rem, 7vw, 7rem);
-  aspect-ratio: 1;
+  width: max-content;
   place-items: center;
   opacity: 0.96;
   transition:
@@ -168,14 +167,12 @@ button {
   transform: translateY(-0.08rem);
 }
 
-.brand img {
-  display: block;
-  width: 96%;
-  height: 96%;
-  object-fit: contain;
-  filter:
-    drop-shadow(0 0 0.28rem rgba(3, 3, 2, 0.84))
-    drop-shadow(0 0 1.25rem rgba(216, 155, 53, 0.14));
+.brand span {
+  color: var(--bone);
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 1.7vw, 1.8rem);
+  letter-spacing: 0.18em;
+  text-shadow: 0 0 1.25rem rgba(216, 155, 53, 0.2);
 }
 
 .site-header nav {
@@ -317,7 +314,7 @@ button {
   opacity: 0.94;
   background:
     linear-gradient(90deg, rgba(3, 3, 2, 0), rgba(3, 3, 2, 0.38)),
-    url("/assets/jaguar-eye-hero.png");
+    url("/yaguara/assets/jaguar-eye-hero.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -1101,7 +1098,7 @@ button {
   background:
     linear-gradient(0deg, rgba(3, 3, 2, 0.88) 0%, rgba(3, 3, 2, 0.16) 50%, rgba(3, 3, 2, 0.58) 100%),
     var(--project-bg),
-    url("/assets/portfolio-stills.png");
+    url("/yaguara/assets/portfolio-stills.png");
   background-size:
     auto,
     auto,
@@ -1392,7 +1389,7 @@ button {
   opacity: 0.72;
   background:
     linear-gradient(90deg, rgba(3, 3, 2, 0), rgba(3, 3, 2, 0.62)),
-    url("/assets/jaguar-eye-footer.png");
+    url("/yaguara/assets/jaguar-eye-footer.png");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: left center;

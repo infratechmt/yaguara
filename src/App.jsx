@@ -74,8 +74,6 @@ const reelVideos = [
   },
 ];
 
-const aboutJaguar = asset("./IMAGENS/yaguara-jaguar-cutout.png");
-
 const jaguarVideos = [
   {
     src: publicAsset("assets/jaguar-videos/pantanal-jaguar.webm"),
@@ -293,7 +291,7 @@ function Header({ language, setLanguage, labels, onNavigate }) {
   return (
     <header className="site-header" aria-label="Navegacao principal">
       <a className="brand" href="#home" aria-label="Yaguara Films home" onClick={onNavigate}>
-        <img src="/assets/yaguara-logo-transparent.png" alt="Yaguara Films" />
+        <span>YAGUARA</span>
       </a>
       <nav>
         <a href="#home" onClick={onNavigate}>
@@ -560,7 +558,6 @@ function WhatWeDo({ labels }) {
             <p key={line}>{line}</p>
           ))}
         </div>
-        <img className="about-jaguar" src={aboutJaguar} alt="" aria-hidden="true" />
       </div>
       <div className="service-strip">
         {labels.services.map((service) => (
