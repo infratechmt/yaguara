@@ -102,7 +102,6 @@ const copy = {
     marquee: ["YAGUARA FILMS", "QUEM PISCA PERDE", "OLHAR DE ONCA", "INSTINTO EM CADA CORTE", "A NOITE TAMBEM VE"],
     services: ["FILME", "PUBLICIDADE", "POS-PRODUCAO"],
     start: "INICIAR PROJETO",
-    social: ["INSTAGRAM", "VIMEO", "EMAIL"],
     privacy: "PRIVACIDADE",
     privacyUpdated: "Atualizado em 26/06/2026",
   },
@@ -125,7 +124,6 @@ const copy = {
     marquee: ["YAGUARA FILMS", "BLINK AND MISS IT", "JAGUAR GAZE", "INSTINCT IN EVERY CUT", "THE NIGHT WATCHES TOO"],
     services: ["FILM", "ADVERTISING", "POST-PRODUCTION"],
     start: "START A PROJECT",
-    social: ["INSTAGRAM", "VIMEO", "EMAIL"],
     privacy: "PRIVACY",
     privacyUpdated: "Updated on 06/26/2026",
   },
@@ -547,11 +545,6 @@ function FooterCta({ labels, onNavigate }) {
         <span>YAGUARA FILMS</span>
         <a href="https://www.instagram.com/yaguara.films/" target="_blank" rel="noreferrer">
           INSTAGRAM
-        </a>
-        <span>VIMEO</span>
-        <a href="mailto:hello@yaguarafilms.com">EMAIL</a>
-        <a href="#privacidade" onClick={onNavigate}>
-          {labels.privacy}
         </a>
       </div>
     </footer>

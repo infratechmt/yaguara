@@ -1681,7 +1681,7 @@ button {
 .footer-bottom {
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr repeat(4, auto);
+  grid-template-columns: 1fr auto;
   gap: 2rem;
   align-items: center;
   color: rgba(238, 231, 220, 0.76);
