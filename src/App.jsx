@@ -345,10 +345,6 @@ function Hero({ labels, onNavigate }) {
       </div>
       <div className="hero-noise" aria-hidden="true" />
       <div className="hero-gaze" aria-hidden="true" />
-      <div className="scroll-rail" aria-hidden="true">
-        <span>SCROLL</span>
-        <i />
-      </div>
       <div className="hero-copy">
         <h1>{labels.heroTitle}</h1>
         <p>{labels.heroLine}</p>

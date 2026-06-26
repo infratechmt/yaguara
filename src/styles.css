@@ -530,43 +530,6 @@ button {
   }
 }
 
-.scroll-rail {
-  position: absolute;
-  left: clamp(1.4rem, 3vw, 3.2rem);
-  bottom: 11rem;
-  display: grid;
-  gap: 1rem;
-  justify-items: center;
-  color: rgba(238, 231, 220, 0.56);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.28em;
-  writing-mode: vertical-rl;
-}
-
-.scroll-rail i {
-  display: block;
-  width: 0.52rem;
-  height: 0.52rem;
-  border: 1px solid var(--amber);
-  border-radius: 50%;
-  box-shadow: 0 0 1rem rgba(216, 155, 53, 0.8);
-  animation: scrollPulse 1.6s ease-in-out infinite;
-}
-
-@keyframes scrollPulse {
-  0%,
-  100% {
-    transform: scale(0.82);
-    opacity: 0.48;
-  }
-
-  50% {
-    transform: scale(1.15);
-    opacity: 1;
-  }
-}
-
 .hero-copy {
   position: relative;
   z-index: 2;
@@ -1809,10 +1772,6 @@ button {
   .hero {
     min-height: auto;
     padding: 7.4rem 1rem 3.5rem;
-  }
-
-  .scroll-rail {
-    display: none;
   }
 
   .hero-gaze {
