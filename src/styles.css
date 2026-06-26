@@ -1553,100 +1553,6 @@ button {
   background: var(--amber);
 }
 
-.privacy-section {
-  position: relative;
-  padding-block: clamp(5rem, 10vw, 9rem);
-  border-top: 1px solid rgba(216, 155, 53, 0.12);
-  scroll-margin-top: 7rem;
-}
-
-.privacy-section::before {
-  position: absolute;
-  inset: 8% 0 auto auto;
-  width: min(48vw, 42rem);
-  height: min(48vw, 42rem);
-  content: "";
-  pointer-events: none;
-  background: radial-gradient(circle, rgba(216, 155, 53, 0.12), transparent 62%);
-  filter: blur(0.4rem);
-}
-
-.privacy-kicker {
-  color: var(--amber);
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-}
-
-.privacy-head {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(18rem, 0.7fr);
-  gap: clamp(1.5rem, 5vw, 5rem);
-  align-items: end;
-  margin-top: 1rem;
-  margin-bottom: clamp(2rem, 5vw, 4rem);
-}
-
-.privacy-head h2 {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(4rem, 8vw, 9rem);
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  line-height: 0.9;
-}
-
-.privacy-head p {
-  margin: 0;
-  max-width: 34rem;
-  color: rgba(238, 231, 220, 0.76);
-  font-size: clamp(1rem, 1.4vw, 1.25rem);
-  line-height: 1.7;
-}
-
-.privacy-grid {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  border-top: 1px solid rgba(216, 155, 53, 0.22);
-  border-left: 1px solid rgba(216, 155, 53, 0.16);
-}
-
-.privacy-grid article {
-  min-height: 17rem;
-  padding: clamp(1.2rem, 2vw, 2rem);
-  border-right: 1px solid rgba(216, 155, 53, 0.16);
-  border-bottom: 1px solid rgba(216, 155, 53, 0.16);
-  background:
-    linear-gradient(135deg, rgba(216, 155, 53, 0.06), transparent 42%),
-    rgba(5, 6, 4, 0.42);
-}
-
-.privacy-grid h3 {
-  margin: 0 0 1rem;
-  color: var(--amber);
-  font-family: var(--font-display);
-  font-size: clamp(1.6rem, 2.2vw, 2.6rem);
-  font-weight: 400;
-  letter-spacing: 0.11em;
-}
-
-.privacy-grid p {
-  margin: 0 0 0.85rem;
-  color: rgba(238, 231, 220, 0.74);
-  font-size: 0.96rem;
-  line-height: 1.65;
-}
-
-.privacy-grid a {
-  color: var(--bone);
-  text-decoration-color: rgba(216, 155, 53, 0.6);
-  text-underline-offset: 0.28em;
-}
 
 .footer-cta {
   min-height: 62vh;
@@ -1718,11 +1624,6 @@ button {
 
   .what {
     grid-template-columns: 1fr;
-  }
-
-  .privacy-head,
-  .privacy-grid {
-    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -1861,15 +1762,6 @@ button {
 
   .service-strip {
     grid-template-columns: 1fr;
-  }
-
-  .privacy-head,
-  .privacy-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .privacy-grid article {
-    min-height: auto;
   }
 
   .about-panel {
