@@ -103,6 +103,8 @@ const copy = {
     services: ["FILME", "PUBLICIDADE", "POS-PRODUCAO"],
     start: "INICIAR PROJETO",
     social: ["INSTAGRAM", "VIMEO", "EMAIL"],
+    privacy: "PRIVACIDADE",
+    privacyUpdated: "Atualizado em 26/06/2026",
   },
   en: {
     nav: ["HOME", "PORTFOLIO", "YAGUARA WHO?", "CONTACT"],
@@ -124,6 +126,8 @@ const copy = {
     services: ["FILM", "ADVERTISING", "POST-PRODUCTION"],
     start: "START A PROJECT",
     social: ["INSTAGRAM", "VIMEO", "EMAIL"],
+    privacy: "PRIVACY",
+    privacyUpdated: "Updated on 06/26/2026",
   },
 };
 
@@ -536,7 +540,7 @@ function WhatWeDo({ labels }) {
   );
 }
 
-function FooterCta({ labels }) {
+function FooterCta({ labels, onNavigate }) {
   return (
     <footer className="footer-cta section-reveal" id="contact">
       <div className="footer-eye" aria-hidden="true" />
@@ -545,11 +549,114 @@ function FooterCta({ labels }) {
       </MagneticButton>
       <div className="footer-bottom">
         <span>YAGUARA FILMS</span>
-        {labels.social.map((item) => (
-          <span key={item}>{item}</span>
-        ))}
+        <a href="https://www.instagram.com/yaguara.films/" target="_blank" rel="noreferrer">
+          INSTAGRAM
+        </a>
+        <span>VIMEO</span>
+        <a href="mailto:hello@yaguarafilms.com">EMAIL</a>
+        <a href="#privacidade" onClick={onNavigate}>
+          {labels.privacy}
+        </a>
       </div>
     </footer>
+  );
+}
+
+function PrivacyNotice({ labels, language }) {
+  const isPt = language === "pt";
+  const mailHref =
+    "mailto:hello@yaguarafilms.com?subject=Solicitacao%20LGPD%20-%20Yaguara%20Films";
+
+  return (
+    <section className="privacy-section section-reveal" id="privacidade" aria-labelledby="privacy-title">
+      <div className="privacy-kicker">{labels.privacyUpdated}</div>
+      <div className="privacy-head">
+        <h2 id="privacy-title">{isPt ? "Privacidade e LGPD" : "Privacy and LGPD"}</h2>
+        <p>
+          {isPt
+            ? "Esta página explica, de forma simples, como a Yaguara Films trata dados pessoais no site e nos contatos iniciados por e-mail."
+            : "This page explains how Yaguara Films handles personal data on the website and in email contacts."}
+        </p>
+      </div>
+
+      <div className="privacy-grid">
+        <article>
+          <h3>{isPt ? "Controlador" : "Controller"}</h3>
+          <p>
+            {isPt
+              ? "Yaguara Films, projeto audiovisual em fase de formalização cadastral. Razão social, CNPJ e endereço serão atualizados aqui assim que definidos."
+              : "Yaguara Films, an audiovisual project currently completing its business registration. Legal name, tax ID and address will be updated here once available."}
+          </p>
+          <p>
+            {isPt ? "Canal de privacidade: " : "Privacy contact: "}
+            <a href={mailHref}>hello@yaguarafilms.com</a>
+          </p>
+        </article>
+
+        <article>
+          <h3>{isPt ? "Dados tratados" : "Data processed"}</h3>
+          <p>
+            {isPt
+              ? "O site não possui formulário, Analytics, pixels ou cookies não essenciais. Ao clicar no botão de contato, o aplicativo de e-mail do visitante é aberto e a mensagem enviada poderá conter nome, e-mail, telefone, empresa, briefing e demais informações escritas pelo próprio visitante."
+              : "The website does not use forms, Analytics, pixels or non-essential cookies. When the contact button is clicked, the visitor's email app opens and the message may include name, email, phone, company, briefing and other information written by the visitor."}
+          </p>
+        </article>
+
+        <article>
+          <h3>{isPt ? "Finalidades e bases legais" : "Purposes and legal bases"}</h3>
+          <p>
+            {isPt
+              ? "Os dados são usados para responder solicitações, preparar propostas, executar tratativas pré-contratuais ou contratuais, cumprir obrigações legais e proteger direitos. As bases legais podem incluir execução de contrato ou procedimentos preliminares, legítimo interesse, cumprimento de obrigação legal e consentimento quando aplicável."
+              : "Data is used to answer requests, prepare proposals, handle pre-contractual or contractual communications, comply with legal duties and protect rights. Legal bases may include contract performance or preliminary steps, legitimate interest, legal obligation and consent when applicable."}
+          </p>
+        </article>
+
+        <article>
+          <h3>{isPt ? "Fornecedores e transferências" : "Vendors and transfers"}</h3>
+          <p>
+            {isPt
+              ? "A hospedagem do site utiliza GitHub Pages. Mensagens são tratadas pelo provedor de e-mail usado pela Yaguara Films. Esses fornecedores podem operar infraestrutura fora do Brasil, o que pode envolver transferência internacional de dados conforme seus próprios termos e medidas de segurança."
+              : "The website is hosted on GitHub Pages. Messages are handled by Yaguara Films' email provider. These vendors may operate infrastructure outside Brazil, which may involve international data transfers under their own terms and security measures."}
+          </p>
+        </article>
+
+        <article>
+          <h3>{isPt ? "Retenção e segurança" : "Retention and security"}</h3>
+          <p>
+            {isPt
+              ? "As mensagens serão mantidas apenas pelo período necessário ao atendimento, negociação, execução de serviços, cumprimento de obrigações legais ou proteção de direitos. O acesso às mensagens deve ser limitado a pessoas autorizadas, com senha forte e autenticação em dois fatores sempre que disponível."
+              : "Messages are kept only for as long as necessary to provide service, negotiate, perform services, comply with legal obligations or protect rights. Access should be limited to authorized people, using strong passwords and two-factor authentication whenever available."}
+          </p>
+        </article>
+
+        <article>
+          <h3>{isPt ? "Direitos do titular" : "Data subject rights"}</h3>
+          <p>
+            {isPt
+              ? "Você pode solicitar confirmação de tratamento, acesso, correção, anonimização, bloqueio, eliminação, portabilidade, informação sobre compartilhamento, revisão de decisões automatizadas quando existirem e revogação de consentimento."
+              : "You may request confirmation of processing, access, correction, anonymization, blocking, deletion, portability, sharing information, review of automated decisions where applicable and withdrawal of consent."}
+          </p>
+        </article>
+
+        <article>
+          <h3>{isPt ? "Incidentes" : "Incidents"}</h3>
+          <p>
+            {isPt
+              ? "Em caso de incidente de segurança com risco ou dano relevante aos titulares, a Yaguara Films avaliará o caso e adotará as comunicações cabíveis à ANPD e aos titulares dentro do prazo legal aplicável."
+              : "In case of a security incident with relevant risk or damage to data subjects, Yaguara Films will assess the case and make the applicable notifications to the ANPD and affected individuals within the legal deadline."}
+          </p>
+        </article>
+
+        <article>
+          <h3>{isPt ? "Observação" : "Note"}</h3>
+          <p>
+            {isPt
+              ? "Esta adequação reduz riscos e aumenta transparência, mas não substitui uma revisão jurídica completa da operação da empresa."
+              : "This notice reduces risk and improves transparency, but it does not replace a complete legal review of the company's operation."}
+          </p>
+        </article>
+      </div>
+    </section>
   );
 }
 
@@ -703,7 +810,8 @@ export default function App() {
         <KineticStrip labels={labels} />
         <VisualAlbum labels={labels} language={language} />
         <WhatWeDo labels={labels} />
-        <FooterCta labels={labels} />
+        <PrivacyNotice labels={labels} language={language} />
+        <FooterCta labels={labels} onNavigate={handleNavigate} />
       </main>
     </>
   );
