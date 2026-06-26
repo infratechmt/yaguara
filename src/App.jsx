@@ -520,12 +520,12 @@ function WhatWeDo({ labels }) {
             <p key={line}>{line}</p>
           ))}
         </div>
-        <img
-          className="about-jaguar"
-          src={publicAsset("assets/yaguara-jaguar-cutout.png")}
-          alt=""
-          aria-hidden="true"
-        />
+        <div className="about-scratches" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
       </div>
       <div className="service-strip">
         {labels.services.map((service) => (
