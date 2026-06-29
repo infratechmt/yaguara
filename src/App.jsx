@@ -496,9 +496,6 @@ function VisualAlbum({ labels, language }) {
           />
           <div className="lightbox-content">
             <img src={activeLightboxImage.image} alt={activeLightboxImage.title[language]} />
-            <div className="lightbox-caption">
-              <h3>{activeLightboxImage.title[language]}</h3>
-            </div>
             {selectedProject.gallery && (
               <div className="lightbox-gallery" aria-label={`${selectedProject.title[language]} album`}>
                 {selectedProject.gallery.map((item) => (

@@ -904,31 +904,6 @@ button {
   background: #050504;
 }
 
-.lightbox-caption {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: clamp(1rem, 3vw, 2.2rem);
-  background: linear-gradient(0deg, rgba(3, 3, 2, 0.92), transparent);
-  pointer-events: none;
-}
-
-.lightbox-caption span {
-  color: var(--amber);
-  font-size: 0.7rem;
-  letter-spacing: 0.22em;
-}
-
-.lightbox-caption h3 {
-  margin: 0.25rem 0 0;
-  font-family: var(--font-display);
-  font-size: clamp(2.4rem, 6vw, 6rem);
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  line-height: 0.9;
-}
-
 .lightbox-gallery {
   position: absolute;
   left: clamp(0.8rem, 2vw, 1.2rem);
