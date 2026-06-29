@@ -348,39 +348,20 @@ button {
   right: 0;
   z-index: 30;
   display: grid;
-  grid-template-columns: 9rem 1fr auto;
+  grid-template-columns: 1fr auto;
   align-items: center;
   gap: 2rem;
-  padding: 1.7rem clamp(1.2rem, 3.4vw, 4.2rem);
-}
-
-.brand {
-  display: inline-grid;
-  width: max-content;
-  place-items: center;
-  opacity: 0.96;
-  transition:
-    opacity 240ms ease,
-    transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.brand:hover,
-.brand:focus-visible {
-  opacity: 1;
-  transform: translateY(-0.08rem);
-}
-
-.brand span {
-  color: var(--bone);
-  font-family: var(--font-display);
-  font-size: clamp(1.15rem, 1.7vw, 1.8rem);
-  letter-spacing: 0.18em;
-  text-shadow: 0 0 1.25rem rgba(216, 155, 53, 0.2);
+  padding: 1rem clamp(1.2rem, 3.4vw, 4.2rem);
+  border-bottom: 1px solid rgba(238, 231, 220, 0.08);
+  background: linear-gradient(180deg, rgba(3, 3, 2, 0.82), rgba(3, 3, 2, 0.42));
+  box-shadow: 0 1.2rem 3.2rem rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(0.9rem) saturate(1.08);
+  -webkit-backdrop-filter: blur(0.9rem) saturate(1.08);
 }
 
 .site-header nav {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: clamp(1.4rem, 4.2vw, 5.5rem);
   font-size: 0.78rem;
   font-weight: 600;
@@ -1557,11 +1538,11 @@ button {
 
 @media (max-width: 1040px) {
   .site-header {
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: 1fr auto;
   }
 
   .site-header nav {
-    justify-content: end;
+    justify-content: flex-start;
     gap: 1.5rem;
   }
 
@@ -1602,7 +1583,7 @@ button {
 
   .site-header {
     padding: 1rem;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 1fr auto;
   }
 
   .scroll-progress {
@@ -1610,15 +1591,20 @@ button {
   }
 
   .site-header nav {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-right: 0.4rem;
+    font-size: 0.62rem;
+    scrollbar-width: none;
+  }
+
+  .site-header nav::-webkit-scrollbar {
     display: none;
   }
 
   .language-toggle {
     justify-self: end;
-  }
-
-  .brand {
-    width: 4.6rem;
   }
 
   .hero {

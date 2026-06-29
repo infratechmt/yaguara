@@ -262,9 +262,6 @@ function ScrollProgress({ labels }) {
 function Header({ language, setLanguage, labels, onNavigate }) {
   return (
     <header className="site-header" aria-label="Navegacao principal">
-      <a className="brand" href="#home" aria-label="Yaguara Films home" onClick={onNavigate}>
-        <span>YAGUARA</span>
-      </a>
       <nav>
         <a href="#home" onClick={onNavigate}>
           {labels.nav[0]}
