@@ -83,7 +83,7 @@ const projects = [
     image: asset("./IMAGENS/CHAPADA FC/9.jpg"),
   },
   {
-    title: { pt: "GIRO", en: "PATROL" },
+    title: { pt: "AERONAUTICA", en: "AIR FORCE" },
     type: { pt: "PUBLICIDADE", en: "ADVERTISING" },
     tone: "spotlight",
     image: asset("./IMAGENS/PORTIFOLIO/SnapInsta-Ai_3769520628211623645.jpg"),
