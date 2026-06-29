@@ -9,6 +9,23 @@ const localAssets = import.meta.glob("./IMAGENS/**/*", {
 const asset = (path) => localAssets[path];
 const publicAsset = (path) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
 
+const preloadImage = (src) =>
+  new Promise((resolve) => {
+    if (!src) {
+      resolve();
+      return;
+    }
+
+    const image = new Image();
+    image.onload = () => resolve();
+    image.onerror = () => resolve();
+    image.src = src;
+
+    if (image.decode) {
+      image.decode().then(resolve).catch(resolve);
+    }
+  });
+
 const projects = [
   {
     title: { pt: "CHAPADA FC", en: "CHAPADA FC" },
@@ -81,6 +98,14 @@ const jaguarVideos = [
     title: { pt: "INSTINTO EM MOVIMENTO", en: "INSTINCT IN MOTION" },
   },
 ];
+
+const mainPageImages = [
+  publicAsset("assets/jaguar-eye-hero.png"),
+  publicAsset("assets/portfolio-stills.png"),
+  publicAsset("assets/jaguar-eye-footer.png"),
+  ...projects.map((project) => project.image),
+].filter(Boolean);
+const uniqueMainPageImages = [...new Set(mainPageImages)];
 
 const copy = {
   pt: {
@@ -376,20 +401,6 @@ function FeaturedWork({ labels, language, reducedMotion }) {
   );
 }
 
-function KineticStrip({ labels }) {
-  const row = [...labels.marquee, ...labels.marquee];
-
-  return (
-    <section className="kinetic-strip" aria-hidden="true">
-      <div>
-        {row.map((item, index) => (
-          <span key={`${item}-${index}`}>{item}</span>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 function VisualAlbum({ labels, language }) {
   const album = [...projects, ...projects];
   const [selectedProject, setSelectedProject] = useState(null);
@@ -622,6 +633,14 @@ export default function App() {
     const startedAt = performance.now();
     const minimumVisibleTime = 2400;
     const preloader = document.createElement("video");
+    const totalSteps = uniqueMainPageImages.length + 1;
+    let completedSteps = 0;
+
+    const markStepComplete = () => {
+      if (!active) return;
+      completedSteps += 1;
+      setLoadingProgress((value) => Math.max(value, Math.min(96, (completedSteps / totalSteps) * 96)));
+    };
 
     const finishLoading = () => {
       if (!active || finished) return;
@@ -639,7 +658,8 @@ export default function App() {
     const updateBufferedProgress = () => {
       if (!active || !preloader.duration || !preloader.buffered.length) return;
       const buffered = preloader.buffered.end(preloader.buffered.length - 1);
-      setLoadingProgress(Math.min(92, Math.max(18, (buffered / preloader.duration) * 92)));
+      const videoShare = 1 / totalSteps;
+      setLoadingProgress((value) => Math.max(value, Math.min(92, (buffered / preloader.duration) * videoShare * 96)));
     };
 
     preloader.muted = true;
@@ -648,9 +668,22 @@ export default function App() {
     preloader.src = reelVideos[0].src;
     preloader.addEventListener("loadedmetadata", () => setLoadingProgress((value) => Math.max(value, 28)));
     preloader.addEventListener("progress", updateBufferedProgress);
-    preloader.addEventListener("canplay", finishLoading, { once: true });
-    preloader.addEventListener("error", finishLoading, { once: true });
+    const videoReady = new Promise((resolve) => {
+      let resolved = false;
+      const completeVideo = () => {
+        if (resolved) return;
+        resolved = true;
+        markStepComplete();
+        resolve();
+      };
+
+      preloader.addEventListener("canplay", completeVideo, { once: true });
+      preloader.addEventListener("error", completeVideo, { once: true });
+    });
     preloader.load();
+
+    const imagePreloads = uniqueMainPageImages.map((src) => preloadImage(src).then(markStepComplete));
+    Promise.all([...imagePreloads, videoReady]).then(finishLoading);
 
     const progressTimer = window.setInterval(() => {
       setLoadingProgress((value) => Math.min(90, value + (90 - value) * 0.08 + 0.4));
@@ -695,7 +728,6 @@ export default function App() {
       <main>
         <Hero labels={labels} onNavigate={handleNavigate} />
         <FeaturedWork labels={labels} language={language} reducedMotion={reducedMotion} />
-        <KineticStrip labels={labels} />
         <VisualAlbum labels={labels} language={language} />
         <WhatWeDo labels={labels} />
         <FooterCta labels={labels} onNavigate={handleNavigate} />

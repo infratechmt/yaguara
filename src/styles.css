@@ -693,37 +693,6 @@ button {
   overflow: hidden;
 }
 
-.kinetic-strip {
-  overflow: hidden;
-  padding-block: clamp(2.4rem, 6vw, 5rem);
-  border-top: 1px solid rgba(216, 155, 53, 0.13);
-  border-bottom: 1px solid rgba(216, 155, 53, 0.13);
-  background:
-    linear-gradient(90deg, rgba(3, 3, 2, 0.96), rgba(23, 41, 34, 0.18), rgba(3, 3, 2, 0.96)),
-    var(--black);
-}
-
-.kinetic-strip div {
-  display: flex;
-  width: max-content;
-  gap: clamp(2.4rem, 5vw, 5.5rem);
-  animation: marqueeDrift 34s linear infinite;
-  will-change: transform;
-}
-
-.kinetic-strip span {
-  color: rgba(238, 231, 220, 0.88);
-  font-family: var(--font-display);
-  font-size: clamp(3rem, 6.8vw, 7.8rem);
-  letter-spacing: 0.12em;
-  white-space: nowrap;
-}
-
-.kinetic-strip span:nth-child(even) {
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(216, 155, 53, 0.52);
-}
-
 .visual-album {
   position: relative;
   overflow: hidden;
@@ -970,16 +939,6 @@ button {
 
   to {
     transform: translateX(calc(-50% - var(--album-gap) / 2 + var(--album-padding) / 2));
-  }
-}
-
-@keyframes marqueeDrift {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
   }
 }
 
@@ -1717,14 +1676,6 @@ button {
     display: none;
   }
 
-  .kinetic-strip {
-    padding-block: 2.4rem;
-  }
-
-  .kinetic-strip div {
-    animation-duration: 22s;
-  }
-
   .visual-album {
     padding-block: 3rem 4rem;
   }
@@ -1832,8 +1783,7 @@ button {
     display: none;
   }
 
-  .album-track,
-  .kinetic-strip div {
+  .album-track {
     animation: none;
   }
 }
