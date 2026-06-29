@@ -696,7 +696,7 @@ button {
 .visual-album {
   position: relative;
   overflow: hidden;
-  padding: clamp(4rem, 9vw, 8rem) 0;
+  padding: clamp(4rem, 8vw, 7rem) 0 clamp(5rem, 9vw, 8rem);
   border-bottom: 1px solid rgba(216, 155, 53, 0.14);
   background:
     radial-gradient(circle at 18% 24%, rgba(216, 155, 53, 0.12), transparent 21rem),
@@ -721,25 +721,56 @@ button {
 
 .album-window {
   overflow: visible;
-  padding-block: 2rem;
+  padding: 2rem clamp(1.2rem, 4.2vw, 4.8rem) 0;
 }
 
-.album-track {
-  --album-gap: clamp(1rem, 2vw, 2rem);
-  --album-padding: clamp(1.2rem, 8vw, 8rem);
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(1rem, 1.6vw, 1.5rem);
+  align-items: start;
+}
+
+.album-block {
+  display: grid;
+  grid-column: span 4;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.album-block:nth-child(4),
+.album-block:nth-child(5) {
+  grid-column: span 6;
+}
+
+.album-pretitle {
   display: flex;
-  width: max-content;
-  gap: var(--album-gap);
-  padding-left: var(--album-padding);
-  animation: albumDrift 38s linear infinite;
-  will-change: transform;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 1.4rem;
+  color: rgba(238, 231, 220, 0.68);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+}
+
+.album-pretitle span {
+  color: var(--amber);
+}
+
+.album-pretitle small {
+  color: rgba(238, 231, 220, 0.52);
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-align: right;
 }
 
 .album-card {
   position: relative;
-  width: clamp(17rem, 28vw, 34rem);
+  width: 100%;
   aspect-ratio: 1.48;
-  flex: 0 0 auto;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -749,8 +780,9 @@ button {
   color: inherit;
   cursor: zoom-in;
   text-align: left;
-  transform: none;
+  transform: translateY(0);
   transition:
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
     border-color 360ms ease,
     box-shadow 360ms ease;
 }
@@ -760,6 +792,7 @@ button {
   z-index: 5;
   border-color: rgba(216, 155, 53, 0.52);
   box-shadow: 0 1.5rem 4.8rem rgba(0, 0, 0, 0.58);
+  transform: translateY(-0.65rem);
   outline: none;
 }
 
@@ -809,18 +842,11 @@ button {
   z-index: 2;
   display: grid;
   gap: 0.22rem;
-  transform: translateY(0.65rem);
+  opacity: 0;
+  transform: translateY(0.9rem);
   transition:
     opacity 420ms ease,
     transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.album-caption span,
-.album-caption small {
-  color: var(--amber);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.22em;
 }
 
 .album-caption h3 {
@@ -831,21 +857,13 @@ button {
   font-weight: 400;
   letter-spacing: 0.14em;
   line-height: 0.9;
-}
-
-.album-caption small {
-  color: rgba(238, 231, 220, 0.72);
-  opacity: 0;
+  text-shadow: 0 0 1.8rem rgba(3, 3, 2, 0.92);
 }
 
 .album-card:hover .album-caption,
 .album-card:focus-visible .album-caption {
-  transform: translateY(0);
-}
-
-.album-card:hover .album-caption small,
-.album-card:focus-visible .album-caption small {
   opacity: 1;
+  transform: translateY(0);
 }
 
 .is-modal-open,
@@ -930,16 +948,6 @@ button {
   font-size: 2rem;
   line-height: 1;
   cursor: pointer;
-}
-
-@keyframes albumDrift {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(calc(-50% - var(--album-gap) / 2 + var(--album-padding) / 2));
-  }
 }
 
 .section-label {
@@ -1581,6 +1589,12 @@ button {
     grid-column: span 6;
   }
 
+  .album-block,
+  .album-block:nth-child(4),
+  .album-block:nth-child(5) {
+    grid-column: span 6;
+  }
+
   .what {
     grid-template-columns: 1fr;
   }
@@ -1685,16 +1699,22 @@ button {
   }
 
   .album-window {
-    padding-block: 1.3rem 2.4rem;
+    padding: 1.3rem 1rem 0;
   }
 
-  .album-track {
-    --album-padding: 1rem;
-    animation-duration: 30s;
+  .album-grid {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+
+  .album-block,
+  .album-block:nth-child(4),
+  .album-block:nth-child(5) {
+    grid-column: auto;
   }
 
   .album-card {
-    width: 18rem;
+    aspect-ratio: 1.28;
   }
 
   .project-grid {
@@ -1783,7 +1803,4 @@ button {
     display: none;
   }
 
-  .album-track {
-    animation: none;
-  }
 }

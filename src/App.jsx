@@ -402,7 +402,6 @@ function FeaturedWork({ labels, language, reducedMotion }) {
 }
 
 function VisualAlbum({ labels, language }) {
-  const album = [...projects, ...projects];
   const [selectedProject, setSelectedProject] = useState(null);
 
   useEffect(() => {
@@ -429,23 +428,26 @@ function VisualAlbum({ labels, language }) {
           <small>01 / 08</small>
         </div>
         <div className="album-window">
-          <div className="album-track">
-            {album.map((project, index) => (
-              <button
-                type="button"
-                className={`album-card tone-${project.tone}`}
-                key={`${project.title.pt}-${index}`}
-                aria-label={`${project.title[language]} — ampliar imagem`}
-                style={{ "--work-image": `url(${project.image})` }}
-                onClick={() => setSelectedProject(project)}
-              >
-                <span className="album-image" />
-                <div className="album-caption">
-                  <span>{String((index % projects.length) + 1).padStart(2, "0")}</span>
-                  <h3>{project.title[language]}</h3>
+          <div className="album-grid">
+            {projects.map((project, index) => (
+              <div className={`album-block tone-${project.tone}`} key={project.title.pt}>
+                <div className="album-pretitle">
+                  <span>{String(index + 1).padStart(2, "0")}</span>
                   <small>{project.type[language]}</small>
                 </div>
-              </button>
+                <button
+                  type="button"
+                  className="album-card"
+                  aria-label={`${project.title[language]} - ampliar imagem`}
+                  style={{ "--work-image": `url(${project.image})` }}
+                  onClick={() => setSelectedProject(project)}
+                >
+                  <span className="album-image" />
+                  <div className="album-caption">
+                    <h3>{project.title[language]}</h3>
+                  </div>
+                </button>
+              </div>
             ))}
           </div>
         </div>
