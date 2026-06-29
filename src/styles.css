@@ -721,56 +721,28 @@ button {
 
 .album-window {
   overflow: visible;
-  padding: 2rem clamp(1.2rem, 4.2vw, 4.8rem) 0;
+  padding: 2rem 0 0;
 }
 
 .album-grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: clamp(1rem, 1.6vw, 1.5rem);
-  align-items: start;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
 }
 
 .album-block {
-  display: grid;
-  grid-column: span 4;
-  gap: 0.75rem;
   min-width: 0;
 }
 
 .album-block:nth-child(4),
 .album-block:nth-child(5) {
-  grid-column: span 6;
-}
-
-.album-pretitle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  min-height: 1.4rem;
-  color: rgba(238, 231, 220, 0.68);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.24em;
-}
-
-.album-pretitle span {
-  color: var(--amber);
-}
-
-.album-pretitle small {
-  color: rgba(238, 231, 220, 0.52);
-  font-size: inherit;
-  font-weight: inherit;
-  letter-spacing: inherit;
-  text-align: right;
+  grid-column: auto;
 }
 
 .album-card {
   position: relative;
   width: 100%;
-  aspect-ratio: 1.48;
+  aspect-ratio: 1.78;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -785,6 +757,31 @@ button {
     transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
     border-color 360ms ease,
     box-shadow 360ms ease;
+}
+
+.album-more {
+  display: block;
+  margin: 1rem auto 0;
+  padding: 0.35rem 0.1rem;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: transparent;
+  color: var(--bone);
+  cursor: pointer;
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition:
+    color 220ms ease,
+    transform 220ms ease;
+}
+
+.album-more:hover,
+.album-more:focus-visible {
+  color: var(--amber);
+  outline: none;
+  transform: translateY(-0.12rem);
 }
 
 .album-card:hover,
@@ -841,7 +838,6 @@ button {
   bottom: 0.9rem;
   z-index: 2;
   display: grid;
-  gap: 0.22rem;
   opacity: 0;
   transform: translateY(0.9rem);
   transition:
@@ -1589,10 +1585,8 @@ button {
     grid-column: span 6;
   }
 
-  .album-block,
-  .album-block:nth-child(4),
-  .album-block:nth-child(5) {
-    grid-column: span 6;
+  .album-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .what {
@@ -1699,18 +1693,11 @@ button {
   }
 
   .album-window {
-    padding: 1.3rem 1rem 0;
+    padding-top: 1.3rem;
   }
 
   .album-grid {
     grid-template-columns: 1fr;
-    gap: 1.4rem;
-  }
-
-  .album-block,
-  .album-block:nth-child(4),
-  .album-block:nth-child(5) {
-    grid-column: auto;
   }
 
   .album-card {

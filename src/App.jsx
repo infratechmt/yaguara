@@ -403,6 +403,8 @@ function FeaturedWork({ labels, language, reducedMotion }) {
 
 function VisualAlbum({ labels, language }) {
   const [selectedProject, setSelectedProject] = useState(null);
+  const [showAllProjects, setShowAllProjects] = useState(false);
+  const visibleProjects = showAllProjects ? projects : projects.slice(0, 6);
 
   useEffect(() => {
     if (!selectedProject) return undefined;
@@ -429,12 +431,8 @@ function VisualAlbum({ labels, language }) {
         </div>
         <div className="album-window">
           <div className="album-grid">
-            {projects.map((project, index) => (
+            {visibleProjects.map((project) => (
               <div className={`album-block tone-${project.tone}`} key={project.title.pt}>
-                <div className="album-pretitle">
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <small>{project.type[language]}</small>
-                </div>
                 <button
                   type="button"
                   className="album-card"
@@ -450,6 +448,11 @@ function VisualAlbum({ labels, language }) {
               </div>
             ))}
           </div>
+          {!showAllProjects && projects.length > visibleProjects.length && (
+            <button type="button" className="album-more" onClick={() => setShowAllProjects(true)}>
+              VER MAIS
+            </button>
+          )}
         </div>
       </section>
 
