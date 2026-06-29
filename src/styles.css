@@ -359,7 +359,7 @@ button {
   right: 0;
   z-index: 30;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 2rem;
   padding: 1rem clamp(1.2rem, 3.4vw, 4.2rem);
@@ -372,6 +372,7 @@ button {
 
 .site-header nav {
   display: flex;
+  grid-column: 2;
   justify-content: center;
   gap: clamp(1.4rem, 4.2vw, 5.5rem);
   font-size: 0.78rem;
@@ -403,6 +404,7 @@ button {
 
 .language-toggle {
   display: inline-flex;
+  grid-column: 3;
   align-items: center;
   justify-self: end;
   gap: 0.25rem;
@@ -697,18 +699,13 @@ button {
 
 .album-head {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 0 clamp(1.2rem, 4.2vw, 4.8rem) 1.6rem;
   color: var(--amber);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.34em;
-}
-
-.album-head small {
-  color: rgba(238, 231, 220, 0.58);
-  font-size: 0.68rem;
 }
 
 .album-window {
@@ -841,9 +838,9 @@ button {
   margin: 0;
   color: var(--bone);
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4.2vw, 4.2rem);
+  font-size: clamp(1.35rem, 2.4vw, 2.7rem);
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   line-height: 0.9;
   text-shadow: 0 0 1.8rem rgba(3, 3, 2, 0.92);
 }
@@ -1549,7 +1546,7 @@ button {
 
 @media (max-width: 1040px) {
   .site-header {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr auto 1fr;
   }
 
   .site-header nav {
@@ -1594,7 +1591,7 @@ button {
 
   .site-header {
     padding: 1rem;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
   .scroll-progress {
@@ -1603,6 +1600,7 @@ button {
 
   .site-header nav {
     display: flex;
+    grid-column: 1;
     gap: 1rem;
     overflow-x: auto;
     padding-right: 0.4rem;
@@ -1615,6 +1613,7 @@ button {
   }
 
   .language-toggle {
+    grid-column: 2;
     justify-self: end;
   }
 

@@ -461,7 +461,6 @@ function VisualAlbum({ labels, language }) {
       <section className="visual-album section-reveal" id="portfolio" aria-label={labels.album}>
         <div className="album-head">
           <span>{labels.album}</span>
-          <small>01 / 08</small>
         </div>
         <div className="album-window">
           <div className="album-grid">
