@@ -26,6 +26,19 @@ const preloadImage = (src) =>
     }
   });
 
+const preloadFonts = () => {
+  if (!document.fonts?.ready) return Promise.resolve();
+
+  return document.fonts.ready.then(() =>
+    Promise.allSettled([
+      document.fonts.load('400 1em "Staatliches"'),
+      document.fonts.load('500 1em "Oswald"'),
+      document.fonts.load('600 1em "Oswald"'),
+      document.fonts.load('700 1em "Oswald"'),
+    ]),
+  );
+};
+
 const projects = [
   {
     title: { pt: "CHAPADA FC", en: "CHAPADA FC" },
@@ -638,7 +651,7 @@ function CursorLight() {
   return <div className="cursor-light" ref={ref} aria-hidden="true" />;
 }
 
-function LoadingScreen({ progress, leaving }) {
+function LoadingScreen({ progress, leaving, fontsReady }) {
   const animatedWord = (word) =>
     [...word].map((letter, index) => (
       <span key={`${word}-${index}`} style={{ "--letter-index": index }} aria-hidden="true">
@@ -647,7 +660,7 @@ function LoadingScreen({ progress, leaving }) {
     ));
 
   return (
-    <div className={`loading-screen${leaving ? " is-leaving" : ""}`} role="status" aria-live="polite">
+    <div className={`loading-screen${leaving ? " is-leaving" : ""}${fontsReady ? " is-font-ready" : ""}`} role="status" aria-live="polite">
       <div className="loading-eye" aria-hidden="true" />
       <div className="loading-brand" aria-label="Yaguara Films">
         <div className="loading-yaguara">{animatedWord("YAGUARA")}</div>
@@ -670,6 +683,7 @@ export default function App() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loaderLeaving, setLoaderLeaving] = useState(false);
+  const [fontsReady, setFontsReady] = useState(false);
   const labels = copy[language];
 
   useEffect(() => {
@@ -679,7 +693,7 @@ export default function App() {
     const startedAt = performance.now();
     const minimumVisibleTime = 2400;
     const preloader = document.createElement("video");
-    const totalSteps = uniqueMainPageImages.length + 1;
+    const totalSteps = uniqueMainPageImages.length + 2;
     let completedSteps = 0;
 
     const markStepComplete = () => {
@@ -729,7 +743,11 @@ export default function App() {
     preloader.load();
 
     const imagePreloads = uniqueMainPageImages.map((src) => preloadImage(src).then(markStepComplete));
-    Promise.all([...imagePreloads, videoReady]).then(finishLoading);
+    const fontsLoaded = preloadFonts().then(() => {
+      if (active) setFontsReady(true);
+      markStepComplete();
+    });
+    Promise.all([...imagePreloads, videoReady, fontsLoaded]).then(finishLoading);
 
     const progressTimer = window.setInterval(() => {
       setLoadingProgress((value) => Math.min(90, value + (90 - value) * 0.08 + 0.4));
@@ -767,7 +785,7 @@ export default function App() {
 
   return (
     <>
-      {loading && <LoadingScreen progress={loadingProgress} leaving={loaderLeaving} />}
+      {loading && <LoadingScreen progress={loadingProgress} leaving={loaderLeaving} fontsReady={fontsReady} />}
       <CursorLight />
       <ScrollProgress labels={labels} />
       <Header language={language} setLanguage={setLanguage} labels={labels} onNavigate={handleNavigate} />
