@@ -1483,40 +1483,6 @@ button {
   opacity: 0.72;
 }
 
-.service-strip {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-column: 1 / -1;
-  border-top: 1px solid rgba(216, 155, 53, 0.3);
-  border-bottom: 1px solid rgba(216, 155, 53, 0.3);
-}
-
-.service-strip span {
-  min-height: 11rem;
-  display: grid;
-  place-items: center;
-  border-right: 1px solid rgba(216, 155, 53, 0.18);
-  color: rgba(238, 231, 220, 0.86);
-  font-family: var(--font-display);
-  padding-inline: 1rem;
-  font-size: clamp(1.9rem, 2.8vw, 3.8rem);
-  letter-spacing: 0.1em;
-  text-align: center;
-  transition:
-    color 220ms ease,
-    background 220ms ease;
-}
-
-.service-strip span:last-child {
-  border-right: 0;
-}
-
-.service-strip span:hover {
-  color: #070604;
-  background: var(--amber);
-}
-
-
 .footer-cta {
   min-height: 62vh;
   display: grid;
@@ -1718,10 +1684,6 @@ button {
     transform: none;
   }
 
-  .service-strip {
-    grid-template-columns: 1fr;
-  }
-
   .about-panel {
     min-height: 38rem;
     overflow: hidden;
@@ -1748,12 +1710,6 @@ button {
     height: 13rem;
     opacity: 0.78;
     transform: translateY(-50%) rotate(-11deg) translateZ(0);
-  }
-
-  .service-strip span {
-    min-height: 8rem;
-    border-right: 0;
-    border-bottom: 1px solid rgba(216, 155, 53, 0.18);
   }
 
   .magnetic-button.round {

@@ -111,7 +111,6 @@ const copy = {
   pt: {
     nav: ["INICIO", "PORTFOLIO", "QUEM E YAGUARA?", "CONTATO"],
     heroTitle: "AUDIOVISUAL COM INSTINTO",
-    heroLine: "FILME / PUBLICIDADE / POS-PRODUCAO",
     watchReel: "ASSISTIR REEL",
     seeWork: "VER TRABALHOS",
     featured: "DESTAQUE",
@@ -125,13 +124,11 @@ const copy = {
     ],
     chapterPrefix: "SECAO",
     marquee: ["YAGUARA FILMS", "QUEM PISCA PERDE", "OLHAR DE ONCA", "INSTINTO EM CADA CORTE", "A NOITE TAMBEM VE"],
-    services: ["FILME", "PUBLICIDADE", "POS-PRODUCAO"],
     start: "INICIAR PROJETO",
   },
   en: {
     nav: ["HOME", "PORTFOLIO", "YAGUARA WHO?", "CONTACT"],
     heroTitle: "AUDIOVISUAL WITH INSTINCT",
-    heroLine: "FILM / ADVERTISING / POST-PRODUCTION",
     watchReel: "WATCH REEL",
     seeWork: "SEE WORK",
     featured: "FEATURED WORK",
@@ -145,7 +142,6 @@ const copy = {
     ],
     chapterPrefix: "SECTION",
     marquee: ["YAGUARA FILMS", "BLINK AND MISS IT", "JAGUAR GAZE", "INSTINCT IN EVERY CUT", "THE NIGHT WATCHES TOO"],
-    services: ["FILM", "ADVERTISING", "POST-PRODUCTION"],
     start: "START A PROJECT",
   },
 };
@@ -366,7 +362,6 @@ function Hero({ labels, onNavigate }) {
       <div className="hero-gaze" aria-hidden="true" />
       <div className="hero-copy">
         <h1>{labels.heroTitle}</h1>
-        <p>{labels.heroLine}</p>
         <div className="hero-actions">
           <MagneticButton href="#featured" onNavigate={onNavigate}>
             {labels.watchReel}
@@ -467,7 +462,6 @@ function VisualAlbum({ labels, language }) {
           <div className="lightbox-content">
             <img src={selectedProject.image} alt={selectedProject.title[language]} />
             <div className="lightbox-caption">
-              <span>{selectedProject.type[language]}</span>
               <h3>{selectedProject.title[language]}</h3>
             </div>
             <button type="button" className="lightbox-close" aria-label="Fechar imagem" onClick={() => setSelectedProject(null)}>
@@ -536,11 +530,6 @@ function WhatWeDo({ labels }) {
           <span />
           <span />
         </div>
-      </div>
-      <div className="service-strip">
-        {labels.services.map((service) => (
-          <span key={service}>{service}</span>
-        ))}
       </div>
     </section>
   );
