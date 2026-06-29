@@ -425,7 +425,6 @@ function FeaturedWork({ labels, language, reducedMotion }) {
           <div className="scanline" />
         </div>
         <div className="featured-meta">
-          <span>{String(activeVideo + 1).padStart(2, "0")}</span>
           <strong>{active.title[language]}</strong>
         </div>
       </div>
