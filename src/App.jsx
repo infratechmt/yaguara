@@ -32,12 +32,36 @@ const projects = [
     type: { pt: "FILME", en: "FILM" },
     tone: "stage",
     image: asset("./IMAGENS/CHAPADA FC/1.jpg"),
+    gallery: [
+      {
+        title: { pt: "CHAPADA FC", en: "CHAPADA FC" },
+        image: asset("./IMAGENS/CHAPADA FC/1.jpg"),
+      },
+      {
+        title: { pt: "UM DIA HISTORICO", en: "A HISTORIC DAY" },
+        image: asset("./IMAGENS/CHAPADA FC/9.jpg"),
+      },
+      {
+        title: { pt: "CAMPO", en: "FIELD" },
+        image: asset("./IMAGENS/CHAPADA FC/4.jpg"),
+      },
+    ],
   },
   {
     title: { pt: "MORRO SAO JERONIMO", en: "SAO JERONIMO HILL" },
     type: { pt: "PUBLICIDADE", en: "ADVERTISING" },
     tone: "forest",
     image: asset("./IMAGENS/PORTIFOLIO/SnapInsta-Ai_3769520628320690220.jpg"),
+    gallery: [
+      {
+        title: { pt: "MORRO SAO JERONIMO", en: "SAO JERONIMO HILL" },
+        image: asset("./IMAGENS/PORTIFOLIO/SnapInsta-Ai_3769520628320690220.jpg"),
+      },
+      {
+        title: { pt: "EXPEDICAO", en: "EXPEDITION" },
+        image: asset("./IMAGENS/PORTIFOLIO/SnapInsta-Ai_3769520628396140555.jpg"),
+      },
+    ],
   },
   {
     title: { pt: "UM DIA HISTORICO", en: "A HISTORIC DAY" },
@@ -106,6 +130,9 @@ const mainPageImages = [
   ...projects.map((project) => project.image),
 ].filter(Boolean);
 const uniqueMainPageImages = [...new Set(mainPageImages)];
+const albumProjects = projects.filter(
+  (project) => !["UM DIA HISTORICO", "CAMPO", "EXPEDICAO"].includes(project.title.pt),
+);
 
 const copy = {
   pt: {
@@ -398,8 +425,10 @@ function FeaturedWork({ labels, language, reducedMotion }) {
 
 function VisualAlbum({ labels, language }) {
   const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedAlbumImage, setSelectedAlbumImage] = useState(null);
   const [showAllProjects, setShowAllProjects] = useState(false);
-  const visibleProjects = showAllProjects ? projects : projects.slice(0, 6);
+  const visibleProjects = showAllProjects ? albumProjects : albumProjects.slice(0, 6);
+  const activeLightboxImage = selectedAlbumImage || selectedProject;
 
   useEffect(() => {
     if (!selectedProject) return undefined;
@@ -433,7 +462,10 @@ function VisualAlbum({ labels, language }) {
                   className="album-card"
                   aria-label={`${project.title[language]} - ampliar imagem`}
                   style={{ "--work-image": `url(${project.image})` }}
-                  onClick={() => setSelectedProject(project)}
+                  onClick={() => {
+                    setSelectedProject(project);
+                    setSelectedAlbumImage(project.gallery?.[0] || project);
+                  }}
                 >
                   <span className="album-image" />
                   <div className="album-caption">
@@ -443,7 +475,7 @@ function VisualAlbum({ labels, language }) {
               </div>
             ))}
           </div>
-          {!showAllProjects && projects.length > visibleProjects.length && (
+          {!showAllProjects && albumProjects.length > visibleProjects.length && (
             <button type="button" className="album-more" onClick={() => setShowAllProjects(true)}>
               VER MAIS
             </button>
@@ -451,20 +483,46 @@ function VisualAlbum({ labels, language }) {
         </div>
       </section>
 
-      {selectedProject && (
+      {selectedProject && activeLightboxImage && (
         <div className="album-lightbox" role="dialog" aria-modal="true" aria-label={selectedProject.title[language]}>
           <button
             type="button"
             className="lightbox-backdrop"
             aria-label="Fechar imagem"
-            onClick={() => setSelectedProject(null)}
+            onClick={() => {
+              setSelectedProject(null);
+              setSelectedAlbumImage(null);
+            }}
           />
           <div className="lightbox-content">
-            <img src={selectedProject.image} alt={selectedProject.title[language]} />
+            <img src={activeLightboxImage.image} alt={activeLightboxImage.title[language]} />
             <div className="lightbox-caption">
-              <h3>{selectedProject.title[language]}</h3>
+              <h3>{activeLightboxImage.title[language]}</h3>
             </div>
-            <button type="button" className="lightbox-close" aria-label="Fechar imagem" onClick={() => setSelectedProject(null)}>
+            {selectedProject.gallery && (
+              <div className="lightbox-gallery" aria-label={`${selectedProject.title[language]} album`}>
+                {selectedProject.gallery.map((item) => (
+                  <button
+                    type="button"
+                    key={item.title.pt}
+                    className={activeLightboxImage.image === item.image ? "active" : ""}
+                    aria-label={item.title[language]}
+                    onClick={() => setSelectedAlbumImage(item)}
+                  >
+                    <img src={item.image} alt="" />
+                  </button>
+                ))}
+              </div>
+            )}
+            <button
+              type="button"
+              className="lightbox-close"
+              aria-label="Fechar imagem"
+              onClick={() => {
+                setSelectedProject(null);
+                setSelectedAlbumImage(null);
+              }}
+            >
               ×
             </button>
           </div>
